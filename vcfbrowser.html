@@ -239,21 +239,26 @@ Go to genome browser (JBrowse)
 		}else{
 			contents = db.exec(query + limits);
 		}
-		outputElm.appendChild(headerCreate(contents[0].columns));
-		var innerDiv = document.createElement('div');
-		innerDiv.setAttribute('id', 'tablediv');
-		innerDiv.setAttribute('class', 'scrolltable');
-		innerDiv.style.width = (allcolnames.length * 130 + 35)+"px";
-		outputElm.appendChild(innerDiv);
-		innerDiv.appendChild(tableCreate(contents[0].values));
-		colnames = contents[0].columns;
-		//document.getElementById("tablehere").innerHTML = new TextDecoder("utf-8").decode(binaryArray);
-		document.getElementById("queried").innerHTML = "Current query: " + query;
-		if(updatenumresults){
-			numresults = parseInt(db.exec('SELECT Count(*) FROM ('+query+")")[0].values);
-			numexportresults = numresults;
+		try{
+			outputElm.appendChild(headerCreate(contents[0].columns));
+			var innerDiv = document.createElement('div');
+			innerDiv.setAttribute('id', 'tablediv');
+			innerDiv.setAttribute('class', 'scrolltable');
+			innerDiv.style.width = (allcolnames.length * 130 + 35)+"px";
+			outputElm.appendChild(innerDiv);
+			innerDiv.appendChild(tableCreate(contents[0].values));
+			colnames = contents[0].columns;
+			//document.getElementById("tablehere").innerHTML = new TextDecoder("utf-8").decode(binaryArray);
+			document.getElementById("queried").innerHTML = "Current query: " + query;
+			if(updatenumresults){
+				numresults = parseInt(db.exec('SELECT Count(*) FROM ('+query+")")[0].values);
+				numexportresults = numresults;
+			}
+			document.getElementById('navinfo').innerHTML = start + " - " + (start+50) + " of <span style='color:#FF0000'><b>" + numresults + "</span></b>";
 		}
-		document.getElementById('navinfo').innerHTML = start + " - " + (start+50) + " of <span style='color:#FF0000'><b>" + numresults + "</span></b>";
+		catch(err){
+			document.getElementById('navinfo').innerHTML = "<span style='color:#FF0000'><b>NO ENTRIES MATCH YOUR QUERY</span></b>"
+		}
 	}
 
 	function finalizetable() {
@@ -508,7 +513,7 @@ Go to genome browser (JBrowse)
 		addaline();
 		currentqueryBUILD="";
 		document.getElementById('queryInput').value = "";
-		handle(currentquerySELECT, 0, false);
+		handle(currentquerySELECT, 0, true);
 	}
 
 	function queryButton() {
