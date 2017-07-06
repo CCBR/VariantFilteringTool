@@ -309,23 +309,27 @@ Go to genome browser (JBrowse)
 	}
 
 	var genotypefilters = [];
+	var genotypes = [];
 	var currentqueryGENOTYPE = "";
 
 	function creategenotypeboxes(columns) {
 		var html = "Genotype filter:<br>";
-		for (i = 41; i < columns.length; i++) {
-			genotypefilters.push("");
-			html += "["+columns[i];
-			html += ' <input type="checkbox" id="gR_'+columns[i]+'"name = "gcheckbox" value ="reference" onchange = "genotypefilter(this)">ref ';
-			html += ' <input type="checkbox" id="gA_'+columns[i]+'"name = "gcheckbox" value ="alternate" onchange = "genotypefilter(this)">alt';
-			html += '] ';
+		for (i = 0; i < columns.length; i++) {
+			if(columns[i].endsWith(".genotypes")) {
+				genotypefilters.push("");
+				genotypes.push(columns[i]);
+				html += "["+columns[i];
+				html += ' <input type="checkbox" id="gR_'+columns[i]+'"name = "gcheckbox" value ="reference" onchange = "genotypefilter(this)">ref ';
+				html += ' <input type="checkbox" id="gA_'+columns[i]+'"name = "gcheckbox" value ="alternate" onchange = "genotypefilter(this)">alt';
+				html += '] ';
+			}
 		}
 		document.getElementById('genotypefilter').innerHTML = html;
 	}
 
 	function genotypefilter(element) {
 		var samplename = element.id.substr(3);
-		var spos = allcolnames.indexOf(samplename)-41;
+		var spos = genotypes.indexOf(samplename);
 		if(element.checked){
 			if(element.value=="reference"){
 				document.getElementById('gA_'+samplename).checked = false;
