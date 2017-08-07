@@ -213,10 +213,10 @@ Go to genome browser (JBrowse)
 			// }
 			//db = db.run('UPDATE vcf SET POS="<a href=\'https://genome.ucsc.edu/cgi-bin/hgTracks?org='+org+'&db='+asmbly+'&position=chr"||CHROM||":"||POS||"\' target=\'_blank\'>"||Pos');
 			//numentries = parseInt(db.exec('SELECT Count(*) FROM vcf')[0].values);
-			chromquery = db.exec("SELECT DISTINCT CHROM FROM vcf")[0].values;
-			for(var i = 0; i < chromquery.length; i++){
-				chroms.push(chromquery[i][0]);
-			}
+			//chromquery = db.exec("SELECT DISTINCT CHROM FROM vcf")[0].values;
+			//for(var i = 0; i < chromquery.length; i++){
+			//	chroms.push(chromquery[i][0]);
+			//}
 			contents = db.exec(query + limits);
 			document.getElementById('includetext').innerHTML = 'Include:';
 			document.getElementById('selectall').innerHTML = '<input type="checkbox" id="allcheckbox" onchange = "includeall(this)" checked>select all';
